@@ -1,0 +1,105 @@
+﻿@model FYD.Models.ViewModels.ProductVM
+
+<form method ="post" asp-action="Upsert " enctype="multipart/form-data">@*use edit action in controller ---- enctype for upload image*@
+    <input asp-for="Product.Id" hidden />
+    <input asp-for="Product.ImageUrl" hidden />
+    <div class="row">
+        <div class="col-10">
+            <div class = "border p-3 mt-4 row">
+        <div class ="col-12 pb-2">
+            <h2 class="text-primary">@(Model.Product.Id !=0?"Update":"Create") Product</h2>
+            <hr />
+        </div>
+        <div asp-validation-summary="All"></div>@*send error messages to the top*@
+        <div class ="mb-3">
+            <label asp-for="Product.Title"></label>
+            <input asp-for="Product.Title" class="form-control" />@*for inpu text box*@
+            <span asp-validation-for="Product.Title" class="text-danger"></span>
+        </div>  
+        <div class ="mb-3">
+            <label asp-for="Product.Description"></label>
+            <textarea asp-for="Product.Description" rows="3" class="form-control"></textarea>
+            <span asp-validation-for="Product.Description" class="text-danger"></span>
+        </div>        
+        <div class ="mb-3 col-6">
+            <label asp-for="Product.MadeFrom"></label>
+            <input asp-for="Product.MadeFrom" class="form-control" />@*for inpu text box*@
+            <span asp-validation-for="Product.MadeFrom" class="text-danger"></span>
+        </div> 
+        <div class ="mb-3 col-6">
+            <label asp-for="Product.ListPrice"></label>
+            <input asp-for="Product.ListPrice" class="form-control" />@*for inpu text box*@
+            <span asp-validation-for="Product.ListPrice" class="text-danger"></span>
+        </div> 
+        <div class ="mb-3 col-6">
+            <label asp-for="Product.Price"></label>
+            <input asp-for="Product.Price" class="form-control" />@*for inpu text box*@
+            <span asp-validation-for="Product.Price" class="text-danger"></span>
+        </div> 
+        <div class ="mb-3 col-6">
+            <label asp-for="Product.Price20"></label>
+            <input asp-for="Product.Price20" class="form-control" />@*for inpu text box*@
+            <span asp-validation-for="Product.Price20" class="text-danger"></span>
+        </div>         
+        <div class ="mb-3">
+            <label asp-for="Product.ImageUrl"></label>
+            <input type="file" id="uploadBox" name="file" class="form-control" />@*image upload*@
+           
+        </div> 
+        <div class ="mb-3">
+            <label asp-for="Product.CategoryId"></label>
+            <select asp-for="Product.CategoryId" asp-items="@Model.CategoryList" class="form-select">
+                <option disabled selected>--Selected Category--</option> @*default value null like in gdys select city*@
+            </select>
+            <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+        </div> 
+        <div class ="mb-3">
+            <label asp-for="Product.DrinkTypeId"></label>
+            <select asp-for="Product.DrinkTypeId" asp-items="@Model.DrinkTypeList" class="form-select">
+                <option disabled selected>--Selected CoverType--</option> @*default value null like in gdys select city*@
+            </select>
+            <span asp-validation-for="Product.DrinkTypeId" class="text-danger"></span>
+        </div> 
+        @if (Model.Product.Id != 0)
+            {
+                <button type="submit" asp-controller="Product" asp-action="Upsert" class="btn btn-primary" style="width:150px">Update</button>
+            }
+            else
+            {
+                @*<button type="submit" onclick="return ValidateInput()" class="btn btn-primary" style="width:150px">Create</button>*@
+                <button type="submit" asp-controller="Product" asp-action="Upsert" class="btn btn-primary" style="width:150px">Create</button>
+            }            
+            <a asp-controller="CoverType" asp-action="Index" class="btn btn-secondary" style ="width:150px">Back to List</a>
+          
+    </div>
+        </div>
+        <div class="col-2 pt-4">
+            <img src="@Model.Product.ImageUrl" 
+            width ="100%" style="border-radius:5px; border:1px solid #bbb9b9" />
+        </div>
+    </div>
+    
+
+</form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"/> // whit this all the validations happens in the clinet side
+    }
+    <script>
+        function ValidateInput(){
+            if(document.getElementById("uploadBox").value==""){//this is where is the image id value and the upper function is from button oncclik name "sweatalerts"
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Oops...',
+                  text: 'Please Upload Image!',                  
+                });
+                return false;
+            }
+            return true;
+
+        }
+    </script>
+    
+}
+
